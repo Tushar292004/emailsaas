@@ -9,7 +9,7 @@ export async function generateEmail(context: string, prompt: string) {
 
     (async () => {
         const { textStream } = await streamText({
-            model: openai('gpt-4-turbo'),
+            model: openai('gpt-3.5-turbo'),
             prompt: `
             You are an AI email assistant embedded in an email client app. Your purpose is to help the user compose emails by providing suggestions and relevant information based on the context of their previous emails.
             
@@ -35,8 +35,8 @@ export async function generateEmail(context: string, prompt: string) {
             `,
         });
 
-        for await (const delta of textStream) {
-            stream.update(delta);
+        for await (const token of textStream) {
+            stream.update(token);
         }
 
         stream.done();
