@@ -31,35 +31,71 @@ const AIComposeButton = (props: Props) => {
     const thread = threads?.find(t => t.id === threadId)
 
 
-    const aiGenerate = async () => {
-        // let context =  ''
+    // const aiGenerate = async () => {
+    //     // let context =  ''
 
-        // if (!props.isComposing) {
-        //   for(const email of thread?.emails ?? []) {
-        //     const content = `
-        //     Subject: ${email.subject}
-        //     From: ${email.from}
-        //     Sent: ${new Date(email.sentAt).toLocaleString()}
-        //     Body: ${turndown.turndown(email.body ?? email.bodySnippet ?? "")}
-        //     `
+    //     // if (!props.isComposing) {
+    //     //   for(const email of thread?.emails ?? []) {
+    //     //     const content = `
+    //     //     Subject: ${email.subject}
+    //     //     From: ${email.from}
+    //     //     Sent: ${new Date(email.sentAt).toLocaleString()}
+    //     //     Body: ${turndown.turndown(email.body ?? email.bodySnippet ?? "")}
+    //     //     `
 
-        //     context += content
-        //   }
-        // }
+    //     //     context += content
+    //     //   }
+    //     // }
 
-        // context += `My name is ${account?.name } and my email is ${account?.emailAddress}`
+    //     // context += `My name is ${account?.name } and my email is ${account?.emailAddress}`
 
-        const { output } = await generateEmail("", prompt)
+    //     const { output } = await generateEmail("", prompt)
 
-        for await (const delta of readStreamableValue(output)) {
-            if (delta) {
-              console.log(delta);
+    //     for await (const delta of readStreamableValue(output)) {
+    //         if (delta) {
+    //           console.log(delta);
               
-                props.onGenerate(delta);
-            }
-        }
+    //             props.onGenerate(delta);
+    //         }
+    //     }
 
+    // }
+
+    const aiGenerate = async () => {
+        let context = '';
+
+        if (!props.isComposing) {
+          for(const email of thread?.emails ?? []) {
+            const content = `
+            Subject: ${email.subject}
+            From: ${email.from}
+            Sent: ${new Date(email.sentAt).toLocaleString()}
+            Body: ${turndown.turndown(email.body ?? email.bodySnippet ?? "")}
+            `
+            context += content
+          }
+        }
+        
+        context += `My name is ${account?.name}`
+        
+        try {
+            // Call your server function with context and prompt
+            const { output } = await generateEmail(context, prompt);
+            
+            // Process the streaming response
+            for await (const delta of readStreamableValue(output)) {
+                if (delta) {
+                    console.log(delta);
+                    props.onGenerate(delta);
+                }
+            }
+        } catch (error) {
+            console.error("Error generating email:", error);
+        }
     }
+
+
+
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger>
