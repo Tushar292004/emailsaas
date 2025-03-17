@@ -22,8 +22,10 @@ export default function RootLayout({
       <html lang="en" className={`${GeistSans.variable}`}>
         <body>
         <ThemeProvider attribute='class' defaultTheme='system' enableSystem disableTransitionOnChange>
-          <TRPCReactProvider><Kbar>{children}</Kbar></TRPCReactProvider>
+          <TRPCReactProvider><Kbar>{children}
           <Toaster />
+          </Kbar></TRPCReactProvider>
+          
           </ThemeProvider>
         </body>
       </html>

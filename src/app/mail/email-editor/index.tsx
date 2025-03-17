@@ -121,8 +121,8 @@ const EmailEditor = ({ toValues, ccValues, subject, setSubject, to, handleSend, 
             </div>
 
             <div
-            ref={ref} 
-            className="p-4 pb-0 space-y-2">
+                ref={ref}
+                className="p-4 pb-0 space-y-2">
                 {expanded && (
                     <>
                         <TagInput
@@ -170,10 +170,14 @@ const EmailEditor = ({ toValues, ccValues, subject, setSubject, to, handleSend, 
                     </kbd>{" "}
                     for AI autocomplete
                 </span>
-                {/* <Button onClick={async () => { editor?.commands.clearContent(); await handleSend(value) }} isLoading={isSending}>
+                <Button onClick={async () => {
+                    editor?.commands.clearContent();
+                    await handleSend(value)
+                }} 
+                isLoading={isSending}>
                     Send
-                </Button> */}
-                <Button>Send</Button>
+                </Button>
+                {/* <Button>Send</Button> */}
             </div>
         </div>
     );

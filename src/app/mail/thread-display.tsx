@@ -64,7 +64,7 @@ export function ThreadDisplay() {
   const thread = _thread ?? foundThread
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full over">
       <div className="flex items-center p-2">
         <div className="flex items-center gap-2">
           <Tooltip>
@@ -204,7 +204,7 @@ export function ThreadDisplay() {
       {isSearching ? <SearchDisplay /> : <>
 
         {thread ? (
-          <div className="flex flex-col flex-1 overflow-scroll">
+          <div className="max-w-full overflow-y-scroll max-h-[calc(100vh-120px)]">
             <div className="flex items-start p-4">
               <div className="flex items-start gap-4 text-sm">
                 <Avatar>
@@ -230,7 +230,7 @@ export function ThreadDisplay() {
               )}
             </div>
             <Separator />
-            <div className="max-h-[calc(100vh-450px)] overflow-scroll flex flex-col">
+            <div className="min-h-[calc(100vh-450px)]  flex flex-col">
               <div className="p-6 flex flex-col gap-4">
                 {thread.emails.map(email => {
                   return <EmailDisplay key={email.id} email={email} />
