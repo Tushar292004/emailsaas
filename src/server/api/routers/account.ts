@@ -4,6 +4,7 @@ import type { Prisma } from "@prisma/client";
 import { db } from "@/server/db";
 import Account from "@/lib/account";
 import { emailAddressSchema } from "@/lib/types";
+import { OramaManager } from "@/lib/orama";
 
 export const authoriseAccountAccess = async (accountId: string, userId: string) => {
     const account = await db.account.findFirst({
@@ -68,6 +69,8 @@ export const accountRouter = createTRPCRouter({
         done: z.boolean()
     })).query(async ({ ctx, input }) => {
         const account = await authoriseAccountAccess(input.accountId, ctx.auth.userId)
+        const acc = new Account(account.token)
+        acc.syncEmails().catch(console.error)
 
         let filter: Prisma.ThreadWhereInput = {}
         if (input.tab === "inbox") {
@@ -322,6 +325,17 @@ export const accountRouter = createTRPCRouter({
             from: input.from,
             inReplyTo: input.inReplyTo,
         })
+    }),
+
+    searchEmails: privateProcedure.input(z.object({
+        accountId: z.string(),
+        query: z.string(),
+    })).mutation(async ({ ctx, input }) => {
+        const account = await authoriseAccountAccess(input.accountId, ctx.auth.userId)
+    const orama = new OramaManager(account.id)
+    await orama.initialize()
+    const result = await orama.search({ term: input.query })
+    return result
     }),
 
     getMyAccount: privateProcedure.input(z.object({

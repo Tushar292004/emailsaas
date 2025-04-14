@@ -16,18 +16,14 @@ import {
   TabsTrigger,
 } from "@/components/ui/tabs"
 import { TooltipProvider } from "@/components/ui/tooltip"
-// import { AccountSwitcher } from "@/app/mail/components/account-switcher"
-// import { ThreadDisplay } from "./thread-display"
-// import { ThreadList } from "./thread-list"
 import { useLocalStorage } from "usehooks-ts"
 import { AccountSwitcher } from "./account-switcher"
 import SideBar from "./sidebar"
 import { ThreadList } from "./thread-list"
 import { ThreadDisplay } from "./thread-display"
-// import SideBar from "./sidebar"
-// import SearchBar, { isSearchingAtom } from "./search-bar"
+import SearchBar, { isSearchingAtom } from "./search-bar"
 // import { useAtom } from "jotai"
-// import AskAI from "./ask-ai"
+import AskAI from "./ask-ai"
 
 interface MailProps {
   defaultLayout: number[] | undefined
@@ -90,7 +86,7 @@ export function Mail({
             <Separator />
             <SideBar isCollapsed={isCollapsed} />
             <div className="flex-1"></div>
-            {/* <AskAI isCollapsed={isCollapsed} /> */}
+            <AskAI isCollapsed={isCollapsed} />
           </div>
 
         </ResizablePanel>
@@ -121,7 +117,7 @@ export function Mail({
               </TabsList>
             </div>
             <Separator />
-            {/* <SearchBar /> */}
+            <SearchBar />
             <TabsContent value="inbox" className="m-0">
               <ThreadList />
             </TabsContent>
